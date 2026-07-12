@@ -1,24 +1,23 @@
 import asyncio
 from src.scrapers.devfolio import DevfolioScraper
 from src.scrapers.dorahacks import DoraHacksScraper
+from src.scrapers.tianchi import TianchiScraper
 
 async def main():
-    print("[*] Starting OpenSpark Bot Engine...")
+    print("[*] Launching OpenSpark Bot Core execution context...")
     
-    devfolio = DevfolioScraper()
-    dorahacks = DoraHacksScraper()
-        
-    print("[*] Fetching live data from Devfolio and DoraHacks...")
-    dev_raw, dora_raw = await asyncio.gather(
-        devfolio.fetch_raw_data(),
-        dorahacks.fetch_raw_data()
-    )
+    scrapers = [
+        DevfolioScraper(),
+        DoraHacksScraper(),
+        TianchiScraper()
+    ]
+
+    print(f"[*] Initializing asynchronous processing for {len(scrapers)} active sweep engines...")
+    raw_results = await asyncio.gather(*[s.fetch_raw_data() for s in scrapers])
     
-    dev_items = devfolio.parse_data(dev_raw)
-    dora_items = dorahacks.parse_data(dora_raw)
-    
-    print(f"\n[+] Extracted {len(dev_items)} items from Devfolio")
-    print(f"[+] Extracted {len(dora_items)} items from DoraHacks")
+    for scraper, raw_html in zip(scrapers, raw_results):
+        parsed = scraper.parse_data(raw_html)
+        print(f"[+] Engine Result -> Source: {scraper.__class__.__name__} | Extracted Items Count: {len(parsed)}")
 
 if __name__ == "__main__":
     asyncio.run(main())
