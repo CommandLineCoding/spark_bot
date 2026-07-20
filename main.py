@@ -4,6 +4,7 @@ from src.scrapers.dorahacks import DoraHacksScraper
 from src.scrapers.tianchi import TianchiScraper
 from src.scrapers.topcoder import TopcoderScraper
 from src.scrapers.taikai import TaikaiScraper
+from src.scrapers.kaggle import KaggleScraper
 
 async def main():
     print("[*] Launching OpenSpark Bot Core execution context...")
@@ -13,7 +14,8 @@ async def main():
         DoraHacksScraper(),
         TianchiScraper(),
         TopcoderScraper(),
-        TaikaiScraper()
+        TaikaiScraper(),
+        KaggleScraper()
     ]
 
     print(f"[*] Initializing asynchronous processing for {len(scrapers)} active sweep engines...")
