@@ -21,7 +21,7 @@ class DevfolioScraper(BaseScraper):
             try:
                 await page.goto(self.base_url, wait_until="domcontentloaded", timeout=30000)
                 await page.wait_for_timeout(3000)
-                for _ in range(1000):
+                for _ in range(10):
                     await page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
                     await page.wait_for_timeout(1500)
                 
